@@ -165,29 +165,6 @@
       flex-shrink: 0;
     }
 
-    /* Progress dots */
-    .dots {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--border);
-      border: 1px solid rgba(26,26,24,0.2);
-      transition: background 0.3s, transform 0.3s;
-      cursor: pointer;
-    }
-
-    .dot.current {
-      background: var(--ink);
-      transform: scale(1.3);
-      border-color: var(--ink);
-    }
-
     /* Error state */
     .error-msg {
       font-family: 'Cormorant Garamond', serif;
@@ -236,16 +213,15 @@
 
     <div class="controls">
       <span class="caption" id="caption"></span>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <div class="controls" style="justify-content: flex-start;">
       <div class="btn-group">
         <button id="btn-prev" aria-label="Previous photo">← Prev</button>
         <button id="btn-next" aria-label="Next photo">Next →</button>
         <button id="btn-pause" class="active" aria-label="Pause slideshow">Pause</button>
       </div>
-    </div>
-
-    <div class="controls" style="justify-content: space-between; align-items: center;">
-      <div class="dots" id="dots" role="tablist" aria-label="Photo navigation"></div>
-      <span class="counter" id="counter"></span>
     </div>
 
     <div class="progress-bar" aria-hidden="true">
@@ -265,7 +241,6 @@
   const imgB     = document.getElementById('img-b');
   const caption  = document.getElementById('caption');
   const counter  = document.getElementById('counter');
-  const dots     = document.getElementById('dots');
   const fillBar  = document.getElementById('progress-fill');
   const btnPrev  = document.getElementById('btn-prev');
   const btnNext  = document.getElementById('btn-next');
@@ -310,28 +285,6 @@
     order = shuffle(photos.map((_, i) => i));
   }
 
-  // ── Dots ─────────────────────────────────────────────────────────────────────
-  function buildDots() {
-    dots.innerHTML = '';
-    const max = Math.min(photos.length, 12);  // cap at 12 dots
-    for (let i = 0; i < max; i++) {
-      const d = document.createElement('button');
-      d.className = 'dot';
-      d.setAttribute('role', 'tab');
-      d.setAttribute('aria-label', `Photo ${i + 1}`);
-      d.dataset.pos = i;
-      d.addEventListener('click', () => { pos = i; showPhoto(order[pos], true); });
-      dots.appendChild(d);
-    }
-  }
-
-  function updateDots() {
-    [...dots.children].forEach((d, i) => {
-      d.classList.toggle('current', i === pos);
-      d.setAttribute('aria-selected', i === pos);
-    });
-  }
-
   // ── Progress bar ─────────────────────────────────────────────────────────────
   function startProgressBar() {
     clearTimeout(fillTimer);
@@ -371,7 +324,6 @@
       active = next;
       caption.textContent = label;
       counter.textContent = `${pos + 1} / ${photos.length}`;
-      updateDots();
       if (resetTimer && !paused) scheduleNext();
       if (!paused) startProgressBar();
     };
@@ -402,7 +354,6 @@
   // ── Init ─────────────────────────────────────────────────────────────────────
   function init() {
     buildOrder();
-    buildDots();
     showPhoto(order[0]);
     scheduleNext();
     startProgressBar();
