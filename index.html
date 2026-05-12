@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
     :root {
       --white: #ffffff;
       --off-white: #f9f8f6;
@@ -18,7 +18,7 @@
       --border: rgba(26, 26, 24, 0.1);
       --duration: 800ms;
     }
-
+ 
     html, body {
       height: 100%;
       background: var(--white);
@@ -27,13 +27,13 @@
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
     }
-
+ 
     body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
-
+ 
     /* ── Main viewer ── */
     main {
       flex: 1;
@@ -44,7 +44,7 @@
       padding: 3rem 2rem;
       position: relative;
     }
-
+ 
     .viewer {
       width: 100%;
       max-width: 860px;
@@ -53,7 +53,7 @@
       align-items: center;
       gap: 2rem;
     }
-
+ 
     /* Image frame */
     .frame {
       width: 100%;
@@ -63,7 +63,7 @@
       overflow: hidden;
       position: relative;
     }
-
+ 
     .frame img {
       position: absolute;
       inset: 0;
@@ -73,11 +73,11 @@
       opacity: 0;
       transition: opacity var(--duration) ease;
     }
-
+ 
     .frame img.visible {
       opacity: 1;
     }
-
+ 
     /* Loading shimmer */
     .frame::after {
       content: '';
@@ -90,23 +90,22 @@
       transition: opacity 0.3s;
       pointer-events: none;
     }
-
+ 
     .frame.loading::after { opacity: 1; }
-
+ 
     @keyframes shimmer {
       0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-
+ 
     /* Controls row */
     .controls {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 1rem;
       width: 100%;
-      justify-content: space-between;
     }
-
+ 
     .caption {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -119,7 +118,14 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
+ 
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+ 
     button {
       cursor: pointer;
       border: none;
@@ -127,23 +133,23 @@
       color: var(--ink-light);
       font-family: 'Jost', sans-serif;
       font-size: 0.85rem;
-      padding: 0 0.25rem;
-      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
       transition: color 0.2s;
     }
-
+ 
     button:hover { color: var(--ink); }
-
+ 
     /* Counter */
     .counter {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       color: var(--ink-light);
       text-transform: uppercase;
-      padding: 0.5rem 0;
       flex-shrink: 0;
+      text-align: right;
     }
-
+ 
     /* Error state */
     .error-msg {
       font-family: 'Cormorant Garamond', serif;
@@ -154,16 +160,16 @@
       padding: 3rem;
       line-height: 1.8;
     }
-
+ 
     /* Interval bar */
     .progress-bar {
       height: 1px;
       background: var(--border);
-      width: 120px;
+      width: 80px;
       position: relative;
       overflow: hidden;
     }
-
+ 
     .progress-fill {
       position: absolute;
       inset: 0 auto 0 0;
@@ -171,7 +177,7 @@
       background: var(--ink);
       transition: width linear;
     }
-
+ 
     /* Responsive */
     @media (max-width: 600px) {
       main { padding: 2rem 1.25rem; }
@@ -182,33 +188,34 @@
   </style>
 </head>
 <body>
-
+ 
 <main>
   <div class="viewer" id="viewer">
     <div class="frame loading" id="frame">
       <img id="img-a" alt="" />
       <img id="img-b" alt="" />
     </div>
-
+ 
     <div class="controls">
-      <button id="btn-prev" aria-label="Previous photo">&lt;</button>
       <span class="caption" id="caption"></span>
-      <button id="btn-next" aria-label="Next photo">&gt;</button>
+      <div class="nav-group">
+        <button id="btn-prev" aria-label="Previous photo">&lt;</button>
+        <div class="progress-bar" aria-hidden="true">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <button id="btn-next" aria-label="Next photo">&gt;</button>
+      </div>
       <span class="counter" id="counter"></span>
-    </div>
-
-    <div class="progress-bar" aria-hidden="true">
-      <div class="progress-fill" id="progress-fill"></div>
     </div>
   </div>
 </main>
-
+ 
 <script>
   // ─── Configuration ───────────────────────────────────────────────────────────
   const INTERVAL_MS = 8000;   // Time between auto-advances (milliseconds)
   const PHOTOS_FILE = 'photos/photos.json';  // Path to your photos manifest
   // ─────────────────────────────────────────────────────────────────────────────
-
+ 
   const frame    = document.getElementById('frame');
   const imgA     = document.getElementById('img-a');
   const imgB     = document.getElementById('img-b');
@@ -217,7 +224,7 @@
   const fillBar  = document.getElementById('progress-fill');
   const btnPrev  = document.getElementById('btn-prev');
   const btnNext  = document.getElementById('btn-next');
-
+ 
   let photos = [];
   let order  = [];      // shuffled index list
   let pos    = 0;       // current position in order[]
@@ -225,7 +232,7 @@
   let paused = false;
   let timer  = null;
   let fillTimer = null;
-
+ 
   // ── Load manifest ────────────────────────────────────────────────────────────
   fetch(PHOTOS_FILE)
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -242,7 +249,7 @@
         Make sure <code>photos/photos.json</code> exists and lists your images.
       </p>`;
     });
-
+ 
   // ── Shuffle helper ───────────────────────────────────────────────────────────
   function shuffle(arr) {
     const a = [...arr];
@@ -252,11 +259,11 @@
     }
     return a;
   }
-
+ 
   function buildOrder() {
     order = shuffle(photos.map((_, i) => i));
   }
-
+ 
   // ── Progress bar ─────────────────────────────────────────────────────────────
   function startProgressBar() {
     clearTimeout(fillTimer);
@@ -269,26 +276,26 @@
       });
     });
   }
-
+ 
   function pauseProgressBar() {
     const computed = getComputedStyle(fillBar).width;
     const pct = (parseFloat(computed) / fillBar.parentElement.offsetWidth) * 100;
     fillBar.style.transition = 'none';
     fillBar.style.width = pct + '%';
   }
-
+ 
   // ── Show photo (crossfade) ────────────────────────────────────────────────────
   function showPhoto(idx, resetTimer = false) {
     const photo = photos[idx];
     const src   = typeof photo === 'string' ? photo : photo.src;
     const label = typeof photo === 'object' && photo.caption ? photo.caption : filename(src);
-
+ 
     const next = active === imgA ? imgB : imgA;
-
+ 
     frame.classList.add('loading');
     next.src = `photos/${src}`;
     next.alt = label;
-
+ 
     next.onload = () => {
       frame.classList.remove('loading');
       next.classList.add('visible');
@@ -299,17 +306,17 @@
       if (resetTimer && !paused) scheduleNext();
       if (!paused) startProgressBar();
     };
-
+ 
     next.onerror = () => {
       frame.classList.remove('loading');
       advance(1);
     };
   }
-
+ 
   function filename(src) {
     return src.split('/').pop().replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
   }
-
+ 
   // ── Navigation ────────────────────────────────────────────────────────────────
   function advance(dir) {
     pos = (pos + dir + order.length) % order.length;
@@ -317,12 +324,12 @@
     if (pos === 0 && dir === 1) buildOrder();
     showPhoto(order[pos], true);
   }
-
+ 
   function scheduleNext() {
     clearTimeout(timer);
     timer = setTimeout(() => advance(1), INTERVAL_MS);
   }
-
+ 
   // ── Init ─────────────────────────────────────────────────────────────────────
   function init() {
     buildOrder();
@@ -330,24 +337,24 @@
     scheduleNext();
     startProgressBar();
   }
-
+ 
   // ── Controls ─────────────────────────────────────────────────────────────────
   btnPrev.addEventListener('click', () => {
     clearTimeout(timer);
     advance(-1);
   });
-
+ 
   btnNext.addEventListener('click', () => {
     clearTimeout(timer);
     advance(1);
   });
-
+ 
   // Keyboard nav
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  { clearTimeout(timer); advance(-1); }
     if (e.key === 'ArrowRight') { clearTimeout(timer); advance(1); }
   });
 </script>
-
+ 
 </body>
 </html>
