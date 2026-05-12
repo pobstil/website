@@ -102,7 +102,7 @@
     .controls {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 0.6rem;
       width: 100%;
       justify-content: space-between;
     }
@@ -120,40 +120,19 @@
       white-space: nowrap;
     }
 
-    .btn-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-shrink: 0;
-    }
-
     button {
       cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--ink);
+      border: none;
+      background: none;
+      color: var(--ink-light);
       font-family: 'Jost', sans-serif;
-      font-weight: 300;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.5rem 1.1rem;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      font-size: 0.85rem;
+      padding: 0 0.25rem;
+      flex-shrink: 0;
+      transition: color 0.2s;
     }
 
-    button:hover {
-      background: var(--ink);
-      color: var(--white);
-      border-color: var(--ink);
-    }
-
-    button:active { opacity: 0.75; }
-
-    button.active {
-      background: var(--ink);
-      color: var(--white);
-      border-color: var(--ink);
-    }
+    button:hover { color: var(--ink); }
 
     /* Counter */
     .counter {
@@ -212,16 +191,10 @@
     </div>
 
     <div class="controls">
+      <button id="btn-prev" aria-label="Previous photo">&lt;</button>
       <span class="caption" id="caption"></span>
+      <button id="btn-next" aria-label="Next photo">&gt;</button>
       <span class="counter" id="counter"></span>
-    </div>
-
-    <div class="controls" style="justify-content: flex-start;">
-      <div class="btn-group">
-        <button id="btn-prev" aria-label="Previous photo">← Prev</button>
-        <button id="btn-next" aria-label="Next photo">Next →</button>
-        <button id="btn-pause" class="active" aria-label="Pause slideshow">Pause</button>
-      </div>
     </div>
 
     <div class="progress-bar" aria-hidden="true">
@@ -244,7 +217,6 @@
   const fillBar  = document.getElementById('progress-fill');
   const btnPrev  = document.getElementById('btn-prev');
   const btnNext  = document.getElementById('btn-next');
-  const btnPause = document.getElementById('btn-pause');
 
   let photos = [];
   let order  = [];      // shuffled index list
@@ -370,24 +342,10 @@
     advance(1);
   });
 
-  btnPause.addEventListener('click', () => {
-    paused = !paused;
-    btnPause.textContent = paused ? 'Play' : 'Pause';
-    btnPause.classList.toggle('active', !paused);
-    if (paused) {
-      clearTimeout(timer);
-      pauseProgressBar();
-    } else {
-      scheduleNext();
-      startProgressBar();
-    }
-  });
-
   // Keyboard nav
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  { clearTimeout(timer); advance(-1); }
     if (e.key === 'ArrowRight') { clearTimeout(timer); advance(1); }
-    if (e.key === ' ')          { e.preventDefault(); btnPause.click(); }
   });
 </script>
 
