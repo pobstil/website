@@ -1,16 +1,24 @@
 {
   "photos": [
     {
-      "src": "photo-1.jpg",
-      "caption": "A caption for your first photo"
+      "src": "_R008714.JPG",
+      "caption": ""
     },
     {
-      "src": "photo-2.jpg",
-      "caption": "A caption for your second photo"
+      "src": "_R008787.JPG",
+      "caption": ""
     },
     {
-      "src": "photo-3.jpg",
-      "caption": "A caption for your third photo"
+      "src": "_R010418.JPG",
+      "caption": ""
+    },
+    {
+      "src": "_R010390.JPG",
+      "caption": ""
+    },
+    {
+      "src": "_R008657.JPG",
+      "caption": ""
     }
   ]
 }
