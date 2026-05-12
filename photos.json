@@ -1,0 +1,16 @@
+{
+  "photos": [
+    {
+      "src": "photo-1.jpg",
+      "caption": "A caption for your first photo"
+    },
+    {
+      "src": "photo-2.jpg",
+      "caption": "A caption for your second photo"
+    },
+    {
+      "src": "photo-3.jpg",
+      "caption": "A caption for your third photo"
+    }
+  ]
+}

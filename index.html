@@ -1,52 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 1em 0;
-            width: 100%;
-            text-align: center;
-        }
-        .content {
-            text-align: center;
-            padding: 2em;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 1em 0;
-            width: 100%;
-            text-align: center;
-            position: absolute;
-            bottom: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --off-white: #f9f8f6;
+      --ink: #1a1a18;
+      --ink-light: #6b6b67;
+      --border: rgba(26, 26, 24, 0.1);
+      --duration: 800ms;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.5rem;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .header-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* ── Main viewer ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      position: relative;
+    }
+
+    .viewer {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Image frame */
+    .frame {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity var(--duration) ease;
+    }
+
+    .frame img.visible {
+      opacity: 1;
+    }
+
+    /* Loading shimmer */
+    .frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .frame.loading::after { opacity: 1; }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Controls row */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink-light);
+      letter-spacing: 0.01em;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    button:hover {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+
+    button:active { opacity: 0.75; }
+
+    button.active {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+
+    /* Counter */
+    .counter {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-light);
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+      flex-shrink: 0;
+    }
+
+    /* Progress dots */
+    .dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid rgba(26,26,24,0.2);
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    .dot.current {
+      background: var(--ink);
+      transform: scale(1.3);
+      border-color: var(--ink);
+    }
+
+    /* Error state */
+    .error-msg {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--ink-light);
+      text-align: center;
+      padding: 3rem;
+      line-height: 1.8;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* Interval bar */
+    .progress-bar {
+      height: 1px;
+      background: var(--border);
+      width: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0%;
+      background: var(--ink);
+      transition: width linear;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header { padding: 1.25rem 1.5rem; }
+      footer { padding: 1.25rem 1.5rem; }
+      main { padding: 2rem 1.25rem; }
+      .controls { flex-wrap: wrap; gap: 0.75rem; }
+      .caption { white-space: normal; font-size: 0.95rem; }
+      .frame { aspect-ratio: 3 / 2; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Our Landing Page</h1>
-    </header>
-    <div class="content">
-        <h2>About Us</h2>
-        <p>This is a basic landing page created as a starting point for your website.</p>
+
+<header>
+  <a href="/" class="site-title">Gallery</a>
+  <span class="header-meta" id="date-label"></span>
+</header>
+
+<main>
+  <div class="viewer" id="viewer">
+    <div class="frame loading" id="frame">
+      <img id="img-a" alt="" />
+      <img id="img-b" alt="" />
     </div>
-    <footer>
-        <p>&copy; 2025 Your Company Name. All rights reserved.</p>
-    </footer>
+
+    <div class="controls">
+      <span class="caption" id="caption"></span>
+      <div class="btn-group">
+        <button id="btn-prev" aria-label="Previous photo">← Prev</button>
+        <button id="btn-next" aria-label="Next photo">Next →</button>
+        <button id="btn-pause" class="active" aria-label="Pause slideshow">Pause</button>
+      </div>
+    </div>
+
+    <div class="controls" style="justify-content: space-between; align-items: center;">
+      <div class="dots" id="dots" role="tablist" aria-label="Photo navigation"></div>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <div class="progress-bar" aria-hidden="true">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="footer-note">Rotating every <span id="interval-label">8</span>s</span>
+  <span class="footer-note" id="total-label"></span>
+</footer>
+
+<script>
+  // ─── Configuration ───────────────────────────────────────────────────────────
+  const INTERVAL_MS = 8000;   // Time between auto-advances (milliseconds)
+  const PHOTOS_FILE = 'photos/photos.json';  // Path to your photos manifest
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  const frame    = document.getElementById('frame');
+  const imgA     = document.getElementById('img-a');
+  const imgB     = document.getElementById('img-b');
+  const caption  = document.getElementById('caption');
+  const counter  = document.getElementById('counter');
+  const dots     = document.getElementById('dots');
+  const fillBar  = document.getElementById('progress-fill');
+  const btnPrev  = document.getElementById('btn-prev');
+  const btnNext  = document.getElementById('btn-next');
+  const btnPause = document.getElementById('btn-pause');
+  const totalLbl = document.getElementById('total-label');
+
+  document.getElementById('date-label').textContent =
+    new Date().toLocaleDateString('en-NZ', { year: 'numeric', month: 'long' });
+  document.getElementById('interval-label').textContent = INTERVAL_MS / 1000;
+
+  let photos = [];
+  let order  = [];      // shuffled index list
+  let pos    = 0;       // current position in order[]
+  let active = imgA;    // the img element currently shown
+  let paused = false;
+  let timer  = null;
+  let fillTimer = null;
+
+  // ── Load manifest ────────────────────────────────────────────────────────────
+  fetch(PHOTOS_FILE)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+      photos = data.photos || data;   // accept { photos: [...] } or plain array
+      if (!photos.length) throw new Error('No photos listed.');
+      init();
+    })
+    .catch(err => {
+      frame.classList.remove('loading');
+      frame.innerHTML = `<p class="error-msg">
+        Could not load photos.<br>
+        <small>${err.message}</small><br><br>
+        Make sure <code>photos/photos.json</code> exists and lists your images.
+      </p>`;
+    });
+
+  // ── Shuffle helper ───────────────────────────────────────────────────────────
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildOrder() {
+    order = shuffle(photos.map((_, i) => i));
+  }
+
+  // ── Dots ─────────────────────────────────────────────────────────────────────
+  function buildDots() {
+    dots.innerHTML = '';
+    const max = Math.min(photos.length, 12);  // cap at 12 dots
+    for (let i = 0; i < max; i++) {
+      const d = document.createElement('button');
+      d.className = 'dot';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', `Photo ${i + 1}`);
+      d.dataset.pos = i;
+      d.addEventListener('click', () => { pos = i; showPhoto(order[pos], true); });
+      dots.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    [...dots.children].forEach((d, i) => {
+      d.classList.toggle('current', i === pos);
+      d.setAttribute('aria-selected', i === pos);
+    });
+  }
+
+  // ── Progress bar ─────────────────────────────────────────────────────────────
+  function startProgressBar() {
+    clearTimeout(fillTimer);
+    fillBar.style.transition = 'none';
+    fillBar.style.width = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fillBar.style.transition = `width ${INTERVAL_MS}ms linear`;
+        fillBar.style.width = '100%';
+      });
+    });
+  }
+
+  function pauseProgressBar() {
+    const computed = getComputedStyle(fillBar).width;
+    const pct = (parseFloat(computed) / fillBar.parentElement.offsetWidth) * 100;
+    fillBar.style.transition = 'none';
+    fillBar.style.width = pct + '%';
+  }
+
+  // ── Show photo (crossfade) ────────────────────────────────────────────────────
+  function showPhoto(idx, resetTimer = false) {
+    const photo = photos[idx];
+    const src   = typeof photo === 'string' ? photo : photo.src;
+    const label = typeof photo === 'object' && photo.caption ? photo.caption : filename(src);
+
+    const next = active === imgA ? imgB : imgA;
+
+    frame.classList.add('loading');
+    next.src = `photos/${src}`;
+    next.alt = label;
+
+    next.onload = () => {
+      frame.classList.remove('loading');
+      next.classList.add('visible');
+      active.classList.remove('visible');
+      active = next;
+      caption.textContent = label;
+      counter.textContent = `${pos + 1} / ${photos.length}`;
+      updateDots();
+      if (resetTimer && !paused) scheduleNext();
+      if (!paused) startProgressBar();
+    };
+
+    next.onerror = () => {
+      frame.classList.remove('loading');
+      advance(1);
+    };
+  }
+
+  function filename(src) {
+    return src.split('/').pop().replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+  }
+
+  // ── Navigation ────────────────────────────────────────────────────────────────
+  function advance(dir) {
+    pos = (pos + dir + order.length) % order.length;
+    // reshuffle when we've seen all photos
+    if (pos === 0 && dir === 1) buildOrder();
+    showPhoto(order[pos], true);
+  }
+
+  function scheduleNext() {
+    clearTimeout(timer);
+    timer = setTimeout(() => advance(1), INTERVAL_MS);
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────────
+  function init() {
+    buildOrder();
+    buildDots();
+    totalLbl.textContent = `${photos.length} photo${photos.length !== 1 ? 's' : ''}`;
+    showPhoto(order[0]);
+    scheduleNext();
+    startProgressBar();
+  }
+
+  // ── Controls ─────────────────────────────────────────────────────────────────
+  btnPrev.addEventListener('click', () => {
+    clearTimeout(timer);
+    advance(-1);
+  });
+
+  btnNext.addEventListener('click', () => {
+    clearTimeout(timer);
+    advance(1);
+  });
+
+  btnPause.addEventListener('click', () => {
+    paused = !paused;
+    btnPause.textContent = paused ? 'Play' : 'Pause';
+    btnPause.classList.toggle('active', !paused);
+    if (paused) {
+      clearTimeout(timer);
+      pauseProgressBar();
+    } else {
+      scheduleNext();
+      startProgressBar();
+    }
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { clearTimeout(timer); advance(-1); }
+    if (e.key === 'ArrowRight') { clearTimeout(timer); advance(1); }
+    if (e.key === ' ')          { e.preventDefault(); btnPause.click(); }
+  });
+</script>
+
 </body>
 </html>
