@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Giulia Turns 40</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  /* =====================================================
+     EASY-EDIT ZONE — colors & fonts
+     Theme: clean minimalist — ivory paper, hairlines, one muted accent
+     ===================================================== */
+  :root{
+    --paper:      #F7F4ED;   /* page background */
+    --ink:        #2A2A26;   /* primary text */
+    --ink-soft:   #6E6A60;   /* secondary text */
+    --accent:     #A8763E;   /* single muted accent - ochre/clay */
+    --accent-dark:#8A5F2F;
+    --line:       #DDD5C2;   /* hairline rules / borders */
+    --white:      #FFFFFF;
+
+    --font-display: 'Newsreader', serif;
+    --font-body:    'Inter', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* =====================================================
+     PASSWORD GATE
+     ===================================================== */
+  #gate{
+    position:fixed; inset:0; z-index:100;
+    background:var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  #gate.hidden{ display:none; }
+  .gate-card{
+    max-width:360px;
+    width:100%;
+    text-align:center;
+    padding:44px 8px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .gate-mark{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--accent);
+    margin:0 0 18px;
+  }
+  .gate-card h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:1.6rem;
+    margin:0 0 8px;
+  }
+  .gate-card p{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin:0 0 26px;
+  }
+  #gate-form{ display:flex; flex-direction:column; gap:14px; }
+  #gate-input{
+    font-family:var(--font-body);
+    font-size:1rem;
+    padding:10px 4px;
+    border:none;
+    border-bottom:1px solid var(--ink-soft);
+    background:transparent;
+    text-align:center;
+    letter-spacing:0.02em;
+    color:var(--ink);
+  }
+  #gate-input:focus{ border-bottom-color:var(--accent); }
+  .gate-btn{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:12px 14px;
+    font-weight:500;
+    font-size:0.92rem;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .gate-btn:hover{ background:var(--accent-dark); }
+  #gate-error{
+    color:var(--accent-dark);
+    font-size:0.85rem;
+    min-height:1.2em;
+    margin:0;
+  }
+
+  /* =====================================================
+     HERO
+     ===================================================== */
+  .hero{
+    text-align:center;
+    padding:96px 20px 76px;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-body);
+    text-transform:uppercase;
+    letter-spacing:0.24em;
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    margin:0 0 30px;
+    font-weight:500;
+  }
+  .hero-num{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin:0 0 22px;
+  }
+  .hero-num .rule{
+    height:1px; width:40px;
+    background:var(--line);
+  }
+  .hero-num span{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:500;
+    font-size:1.3rem;
+    color:var(--accent);
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:clamp(2.6rem, 8vw, 4.2rem);
+    line-height:1.06;
+    margin:0 0 22px;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--accent);
+  }
+  .hero .hero-sub{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:380px;
+    margin:0 auto;
+  }
+
+  /* =====================================================
+     SECTION SHELLS
+     ===================================================== */
+  section{
+    max-width:600px;
+    margin:0 auto;
+    padding:70px 20px;
+  }
+  .section-head{ text-align:center; margin-bottom:48px; }
+  .section-eyebrow{
+    font-family:var(--font-body);
+    text-transform:uppercase;
+    letter-spacing:0.2em;
+    font-size:0.68rem;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+    font-weight:500;
+  }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(1.7rem, 5vw, 2.1rem);
+    margin:0;
+    color:var(--ink);
+  }
+
+  /* =====================================================
+     ITINERARY — plain editorial list, hairline rules only
+     ===================================================== */
+  .agenda-item{
+    padding:36px 0;
+    border-top:1px solid var(--line);
+  }
+  .agenda-item:last-child{ border-bottom:1px solid var(--line); }
+  .agenda-time{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--accent);
+    margin:0 0 6px;
+  }
+  .agenda-title{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:1.4rem;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .agenda-item p{
+    margin:0 0 14px;
+    color:var(--ink-soft);
+    font-size:0.96rem;
+  }
+  .agenda-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    margin-top:16px;
+  }
+  .text-link{
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:0.85rem;
+    text-decoration:none;
+    color:var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding-bottom:2px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border-top:none; border-left:none; border-right:none;
+    cursor:pointer;
+    transition:color 0.15s ease, border-color 0.15s ease;
+  }
+  .text-link:hover{ color:var(--accent-dark); border-color:var(--accent-dark); }
+  .text-link svg{ width:13px; height:13px; flex-shrink:0; }
+
+  .note-box{
+    margin-top:18px;
+    border-left:2px solid var(--accent);
+    padding:4px 0 4px 16px;
+    font-size:0.9rem;
+    color:var(--ink-soft);
+  }
+  .note-box strong{ color:var(--ink); }
+
+  /* =====================================================
+     RSVP
+     ===================================================== */
+  .rsvp-section{ border-top:1px solid var(--line); }
+  .rsvp-section > p.lede{
+    color:var(--ink-soft);
+    max-width:380px;
+    margin:0 auto 36px;
+    text-align:center;
+    font-size:0.98rem;
+  }
+  #rsvp-form{
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    max-width:380px;
+    margin:0 auto;
+  }
+  #rsvp-form label{
+    font-size:0.72rem;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+    display:block;
+  }
+  #rsvp-form input, #rsvp-form textarea{
+    width:100%;
+    font-family:var(--font-body);
+    font-size:1rem;
+    padding:8px 2px;
+    border:none;
+    border-bottom:1px solid var(--line);
+    background:transparent;
+    color:var(--ink);
+  }
+  #rsvp-form input:focus, #rsvp-form textarea:focus{ border-bottom-color:var(--accent); }
+  #rsvp-form textarea{ resize:vertical; min-height:60px; }
+  .rsvp-submit{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:14px;
+    font-weight:500;
+    font-size:0.92rem;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    margin-top:8px;
+    transition:background 0.15s ease;
+  }
+  .rsvp-submit:hover{ background:var(--accent-dark); }
+  .rsvp-submit:disabled{ opacity:0.6; cursor:default; }
+  #rsvp-status{
+    margin-top:16px;
+    font-size:0.9rem;
+    text-align:center;
+    min-height:1.2em;
+  }
+  #rsvp-status.error{ color:var(--accent-dark); }
+  #rsvp-status.success{ color:var(--accent-dark); font-family:var(--font-display); font-style:italic; font-size:1.05rem; }
+
+  /* =====================================================
+     FOOTER
+     ===================================================== */
+  footer{
+    text-align:center;
+    padding:44px 20px 60px;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- =======================================================
+     PASSWORD GATE
+     Change the password in the CONFIG block near the bottom
+     of the <script>, in EVENT_CONFIG.password
+     ======================================================= -->
+<div id="gate">
+  <div class="gate-card">
+    <p class="gate-mark">&mdash; 40 &mdash;</p>
+    <h1>You're invited</h1>
+    <p>This page is just for Giulia's people. Enter the password from your invite.</p>
+    <form id="gate-form">
+      <label for="gate-input" class="visually-hidden">Password</label>
+      <input type="password" id="gate-input" autocomplete="off" placeholder="Password" required>
+      <button type="submit" class="gate-btn">UNLOCK INVITE</button>
+      <p id="gate-error" role="alert"></p>
+    </form>
+  </div>
+</div>
+
+<!-- =======================================================
+     MAIN PAGE CONTENT (hidden until password entered)
+     ======================================================= -->
+<div id="page" class="hidden" style="display:none;">
+
+  <!-- HERO ------------------------------------------------ -->
+  <div class="hero">
+    <p class="hero-eyebrow">Saturday 25 July &middot; Wellington</p>
+    <div class="hero-num" aria-hidden="true">
+      <span class="rule"></span>
+      <span class="rule"></span>
+    </div>
+    <h1>Giuls' 40th <em>birthday!</em></h1>
+    <p class="hero-sub">Kia ora koutou! <br><br>
+
+You're warmly invited to celebrate Giulia's 40th year! Please join us for some fun and games for the afternoon, or for dinner and reflections in the evening. Let's celebrate the fantastic squishy human Giuls is and continues to become!</p>
+  </div>
+
+  <!-- ITINERARY -------------------------------------------
+       Edit times, titles, descriptions and map links directly below.
+  -------------------------------------------------------- -->
+  <section aria-labelledby="itinerary-heading">
+    <div class="section-head">
+              <!-- Replace this href with your actual home address / a private map link -->
+        <button class="text-link" id="calendar-btn" type="button">Add to calendar</button>
+<p>Please let us know if you don't know where we live. :-)</p>
+    </div>
+
+    <!-- MINI GOLF -->
+    <div class="agenda-item">
+      <p class="agenda-time">1:00 PM - 3:00 pm ish</p>
+      <h3 class="agenda-title">Mini Golf at Carlucci Land</h3>
+      <p>It's on the tin! Looking forward to 18 holes of sculpture-garden putt-putt through recycled art and metal creatures. BYO trash talk.</p>
+      <div class="agenda-actions">
+        <a class="text-link" href="https://www.google.com/maps/search/?api=1&query=Carlucci+Land+Mini+Golf%2C+281+Happy+Valley+Road%2C+Owhiro+Bay%2C+Wellington+6023" target="_blank" rel="noopener">
+          281 Happy Valley Rd, Ōwhiro Bay
+        </a>
+      </div>
+      
+    </div>
+    <!-- AFTERNOON GAMES -->
+    <div class="agenda-item">
+      <p class="agenda-time">from 3:00 PM ish</p>
+      <h3 class="agenda-title">Afternoon Games!</h3>
+      <p>We'll head home after minigolf for hangs. We'd love to play Tellestrations, and a few other games for the afternoon. Super casual!</p>
+            <div class="note-box">
+        <strong>Bring a game </strong> if you have one! Or other crafty activities are welcome too.
+      </div>
+<div class="agenda-actions">
+      </div>
+    </div>
+    
+    <!-- POTLUCK DINNER -->
+    <div class="agenda-item">
+      <p class="agenda-time">5:00 PM &rarr; late</p>
+      <h3 class="agenda-title">Potluck Dinner at Ours</h3>
+      <p>Back to ours for food, drinks, cake, cozy hangs, reflections.</p>
+      <div class="note-box">
+        <strong>Please bring a dish.</strong> Let us know about allergies or dietary needs in your RSVP.
+      </div>
+      <div class="agenda-actions">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RSVP --------------------------------------------------- -->
+  <section class="rsvp-section" aria-labelledby="rsvp-heading">
+    <div class="section-head">
+      <h2 id="rsvp-heading">See you there?</h2>
+    </div>
+    <p class="lede">Pop your name in so we know numbers.</p>
+
+    <form id="rsvp-form">
+      <div>
+        <label for="rsvp-name">Your name</label>
+        <input type="text" id="rsvp-name" name="name" required autocomplete="name" placeholder="e.g. Alex Chen">
+      </div>
+      <div>
+        <label for="rsvp-note">Anything we should know? (optional)</label>
+        <textarea id="rsvp-note" name="note" placeholder="Allergies, bringing +1s, what you're bringing to share..."></textarea>
+      </div>
+      <button type="submit" class="rsvp-submit" id="rsvp-submit">RSVP</button>
+      <p id="rsvp-status" role="status"></p>
+    </form>
+  </section>
+
+  <footer>
+    Questions? Just message whoever sent you this link.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+
+  /* =====================================================
+     CONFIG — everything you're likely to change lives here
+     ===================================================== */
+  const EVENT_CONFIG = {
+    password: "giulia40",             // <-- change this to your real password
+    sessionKey: "giulia40-unlocked",  // internal, no need to touch
+
+    // Used to build the "Add to calendar" links.
+    // Format: [YYYY, MM, DD, HH, MM] in New Zealand local time.
+    calendar: {
+      title: "Giulia's 40th — Mini Golf & Potluck",
+      details: "Mini golf at Carlucci Land from 1pm, games from 3pm ish at our place, potluck dinner from 5pm ish. Details: (this page's link)",
+      start: [2026, 7, 25, 13, 0],   // 1:00 PM, 25 July 2026
+      end:   [2026, 7, 25, 21, 0],   // 9:00 PM, 25 July 2026
+      // NZ is UTC+12 in July (no daylight saving) — used to build UTC times below
+      utcOffsetHours: 12
+    },
+
+    // Your Formspree endpoint
+    formspreeUrl: "https://formspree.io/f/xqevnaeq"
+  };
+
+  // OPTIONAL: put your real home address / a private maps link here
+  // and it'll be wired into the "Address in your invite" button below.
+  const HOME_MAP_LINK = ""; // e.g. "https://maps.google.com/?q=123+Your+Street,+Wellington"
+
+
+  /* =====================================================
+     PASSWORD GATE
+     ===================================================== */
+  const gate = document.getElementById('gate');
+  const gateForm = document.getElementById('gate-form');
+  const gateInput = document.getElementById('gate-input');
+  const gateError = document.getElementById('gate-error');
+  const page = document.getElementById('page');
+
+  function unlock(){
+    gate.classList.add('hidden');
+    gate.style.display = 'none';
+    page.style.display = 'block';
+  }
+
+  if (sessionStorage.getItem(EVENT_CONFIG.sessionKey) === 'true') {
+    unlock();
+  }
+
+  gateForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const entered = gateInput.value.trim();
+    if (entered.toLowerCase() === EVENT_CONFIG.password.toLowerCase()) {
+      sessionStorage.setItem(EVENT_CONFIG.sessionKey, 'true');
+      gateError.textContent = '';
+      unlock();
+    } else {
+      gateError.textContent = "That's not quite right — check your invite and try again.";
+      gateInput.select();
+    }
+  });
+
+
+  /* =====================================================
+     HOME ADDRESS LINK (optional)
+     ===================================================== */
+  const homeLink = document.getElementById('home-map-link');
+  if (HOME_MAP_LINK) {
+    homeLink.href = HOME_MAP_LINK;
+    homeLink.target = "_blank";
+    homeLink.rel = "noopener";
+  }
+
+
+  /* =====================================================
+     ADD TO CALENDAR (Google Calendar link + .ics download)
+     ===================================================== */
+  function toUtcStamp(parts, offsetHours){
+    const [y, mo, d, h, mi] = parts;
+    // Build as if local, then shift back by the NZ offset to get true UTC
+    const localAsUtcMs = Date.UTC(y, mo - 1, d, h, mi);
+    const utcMs = localAsUtcMs - (offsetHours * 60 * 60 * 1000);
+    const dt = new Date(utcMs);
+    const pad = n => String(n).padStart(2, '0');
+    return dt.getUTCFullYear() + pad(dt.getUTCMonth()+1) + pad(dt.getUTCDate()) +
+           'T' + pad(dt.getUTCHours()) + pad(dt.getUTCMinutes()) + '00Z';
+  }
+
+  document.getElementById('calendar-btn').addEventListener('click', function(){
+    const cal = EVENT_CONFIG.calendar;
+    const startStamp = toUtcStamp(cal.start, cal.utcOffsetHours);
+    const endStamp = toUtcStamp(cal.end, cal.utcOffsetHours);
+
+    const gcalUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+      + "&text=" + encodeURIComponent(cal.title)
+      + "&dates=" + startStamp + "/" + endStamp
+      + "&details=" + encodeURIComponent(cal.details)
+      + "&location=" + encodeURIComponent(cal.location);
+
+    // Build a simple .ics file too, for anyone who'd rather download it
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      "UID:" + Date.now() + "@giulia40",
+      "DTSTAMP:" + startStamp,
+      "DTSTART:" + startStamp,
+      "DTEND:" + endStamp,
+      "SUMMARY:" + cal.title,
+      "DESCRIPTION:" + cal.details,
+      "LOCATION:" + cal.location,
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\r\n");
+
+    // Open Google Calendar in a new tab
+    window.open(gcalUrl, '_blank', 'noopener');
+
+    // Also trigger an .ics download as a fallback for non-Google users
+    const blob = new Blob([ics], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "giulias-40th.ics";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+
+  /* =====================================================
+     RSVP FORM — submits to Formspree
+     ===================================================== */
+  const rsvpForm = document.getElementById('rsvp-form');
+  const rsvpStatus = document.getElementById('rsvp-status');
+  const rsvpSubmit = document.getElementById('rsvp-submit');
+
+  rsvpForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    rsvpSubmit.disabled = true;
+    rsvpSubmit.textContent = "Sending...";
+    rsvpStatus.className = '';
+    rsvpStatus.textContent = '';
+
+    const formData = new FormData(rsvpForm);
+
+    fetch(EVENT_CONFIG.formspreeUrl, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(response){
+      if (response.ok) {
+        rsvpForm.reset();
+        rsvpForm.style.display = 'none';
+        rsvpStatus.className = 'success';
+        rsvpStatus.textContent = "You're on the list — can't wait to see you there.";
+      } else {
+        rsvpStatus.className = 'error';
+        rsvpStatus.textContent = "Something went wrong — mind trying again, or just texting instead?";
+        rsvpSubmit.disabled = false;
+        rsvpSubmit.textContent = "RSVP";
+      }
+    }).catch(function(){
+      rsvpStatus.className = 'error';
+      rsvpStatus.textContent = "Couldn't reach the server — check your connection and try again.";
+      rsvpSubmit.disabled = false;
+      rsvpSubmit.textContent = "RSVP";
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
