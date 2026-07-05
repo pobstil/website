@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Giuls' 40th!</title>
+<title>Giulia Turns 40</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
     --accent-dark:#8A5F2F;
     --line:       #DDD5C2;   /* hairline rules / borders */
     --white:      #FFFFFF;
+    --hero-overlay: rgba(247,244,237,0.75); /* scrim over the hero photo — raise/lower the 0.82 to taste */
 
     --font-display: 'Newsreader', serif;
     --font-body:    'Inter', sans-serif;
@@ -126,8 +127,32 @@
      HERO
      ===================================================== */
   .hero{
+    position:relative;
     text-align:center;
-    padding:96px 20px 76px;
+  }
+  /* Hero photo — a real <img>, not a CSS background, so it can be
+     full page width while keeping its natural aspect ratio (never cropped).
+     The overlay (.hero-overlay) keeps the text readable over it —
+     adjust --hero-overlay above if it feels too light or too heavy. */
+  .hero-photo{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .hero-overlay{
+    position:absolute;
+    inset:0;
+    background:var(--hero-overlay);
+  }
+  .hero-content{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
   }
   .hero-eyebrow{
     font-family:var(--font-body);
@@ -137,24 +162,6 @@
     color:var(--ink-soft);
     margin:0 0 30px;
     font-weight:500;
-  }
-  .hero-num{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    margin:0 0 22px;
-  }
-  .hero-num .rule{
-    height:1px; width:40px;
-    background:var(--line);
-  }
-  .hero-num span{
-    font-family:var(--font-display);
-    font-style:italic;
-    font-weight:500;
-    font-size:1.3rem;
-    color:var(--accent);
   }
   .hero h1{
     font-family:var(--font-display);
@@ -265,6 +272,34 @@
   .note-box strong{ color:var(--ink); }
 
   /* =====================================================
+     GALLERY — swap the placeholder tiles for <img> tags
+     whenever you have real photos (see comment in the HTML)
+     ===================================================== */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+  }
+  .gallery-tile{
+    aspect-ratio:4/5;
+    border:1px dashed var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-soft);
+    font-size:0.78rem;
+    text-align:center;
+    padding:10px;
+  }
+  .gallery-grid img{
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  @media (max-width:480px){
+    .gallery-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  /* =====================================================
      RSVP
      ===================================================== */
   .rsvp-section{ border-top:1px solid var(--line); }
@@ -366,30 +401,32 @@
 
   <!-- HERO ------------------------------------------------ -->
   <div class="hero">
-    <p class="hero-eyebrow">Saturday 25 July &middot; Wellington</p>
-    <div class="hero-num" aria-hidden="true">
-      <span class="rule"></span>
-      <span class="rule"></span>
-    </div>
-    <h1>Giuls' 40th <em>birthday!</em></h1>
-    <p class="hero-sub">Kia ora koutou! <br><br>
+    <img class="hero-photo" src="photos/collage.jpg" alt="" aria-hidden="true">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Saturday 25 July</p>
+      <h1>Giuls' 40th <em>birthday!</em></h1>
+      <p class="hero-sub">Kia ora koutou! <br><br>
 
 You're warmly invited to celebrate Giulia's 40th year! Please join us for some fun and games for the afternoon, or for dinner and reflections in the evening. Let's celebrate the fantastic squishy human Giuls is and continues to become!</p>
+    </div>
   </div>
 
   <!-- ITINERARY -------------------------------------------
        Edit times, titles, descriptions and map links directly below.
   -------------------------------------------------------- -->
   <section aria-labelledby="itinerary-heading">
-    <div class="section-head">
-              <!-- Replace this href with your actual home address / a private map link -->
-        <button class="text-link" id="calendar-btn" type="button">Add to calendar</button>
-<p>Please let us know if you don't know where we live. :-)</p>
+    <h2 id="itinerary-heading" class="visually-hidden">How the day unfolds</h2>
+
+    <div style="text-align:center; margin-bottom:36px;">
+    <p class="hero-eyebrow">Saturday 25th July from 1pm</p>
+    <p class="hero-eyebrow">Our place</p>
+      <button class="text-link" id="calendar-btn" type="button">Add event to your calendar</button>
     </div>
 
     <!-- MINI GOLF -->
     <div class="agenda-item">
-      <p class="agenda-time">1:00 PM - 3:00 pm ish</p>
+      <p class="agenda-time">1:00 PM - 3:00 pm (ish)</p>
       <h3 class="agenda-title">Mini Golf at Carlucci Land</h3>
       <p>It's on the tin! Looking forward to 18 holes of sculpture-garden putt-putt through recycled art and metal creatures. BYO trash talk.</p>
       <div class="agenda-actions">
@@ -401,25 +438,21 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
     </div>
     <!-- AFTERNOON GAMES -->
     <div class="agenda-item">
-      <p class="agenda-time">from 3:00 PM ish</p>
+      <p class="agenda-time">from 3:00 PM (ish)</p>
       <h3 class="agenda-title">Afternoon Games!</h3>
       <p>We'll head home after minigolf for hangs. We'd love to play Tellestrations, and a few other games for the afternoon. Super casual!</p>
             <div class="note-box">
-        <strong>Bring a game </strong> if you have one! Or other crafty activities are welcome too.
-      </div>
-<div class="agenda-actions">
+        <strong>Bring some games!</strong> Or other crafty activities.
       </div>
     </div>
     
     <!-- POTLUCK DINNER -->
     <div class="agenda-item">
-      <p class="agenda-time">5:00 PM &rarr; late</p>
+      <p class="agenda-time">from 5:00 PM (ish)</p>
       <h3 class="agenda-title">Potluck Dinner at Ours</h3>
       <p>Back to ours for food, drinks, cake, cozy hangs, reflections.</p>
       <div class="note-box">
         <strong>Please bring a dish.</strong> Let us know about allergies or dietary needs in your RSVP.
-      </div>
-      <div class="agenda-actions">
       </div>
     </div>
 
@@ -467,6 +500,7 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
     calendar: {
       title: "Giulia's 40th — Mini Golf & Potluck",
       details: "Mini golf at Carlucci Land from 1pm, games from 3pm ish at our place, potluck dinner from 5pm ish. Details: (this page's link)",
+      location: "Wellington, New Zealand", // generic on purpose — swap for your address once you're ready to share it here
       start: [2026, 7, 25, 13, 0],   // 1:00 PM, 25 July 2026
       end:   [2026, 7, 25, 21, 0],   // 9:00 PM, 25 July 2026
       // NZ is UTC+12 in July (no daylight saving) — used to build UTC times below
@@ -476,10 +510,6 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
     // Your Formspree endpoint
     formspreeUrl: "https://formspree.io/f/xqevnaeq"
   };
-
-  // OPTIONAL: put your real home address / a private maps link here
-  // and it'll be wired into the "Address in your invite" button below.
-  const HOME_MAP_LINK = ""; // e.g. "https://maps.google.com/?q=123+Your+Street,+Wellington"
 
 
   /* =====================================================
@@ -516,17 +546,6 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
 
 
   /* =====================================================
-     HOME ADDRESS LINK (optional)
-     ===================================================== */
-  const homeLink = document.getElementById('home-map-link');
-  if (HOME_MAP_LINK) {
-    homeLink.href = HOME_MAP_LINK;
-    homeLink.target = "_blank";
-    homeLink.rel = "noopener";
-  }
-
-
-  /* =====================================================
      ADD TO CALENDAR (Google Calendar link + .ics download)
      ===================================================== */
   function toUtcStamp(parts, offsetHours){
@@ -542,6 +561,7 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
 
   document.getElementById('calendar-btn').addEventListener('click', function(){
     const cal = EVENT_CONFIG.calendar;
+    const location = cal.location || '';
     const startStamp = toUtcStamp(cal.start, cal.utcOffsetHours);
     const endStamp = toUtcStamp(cal.end, cal.utcOffsetHours);
 
@@ -549,7 +569,7 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
       + "&text=" + encodeURIComponent(cal.title)
       + "&dates=" + startStamp + "/" + endStamp
       + "&details=" + encodeURIComponent(cal.details)
-      + "&location=" + encodeURIComponent(cal.location);
+      + "&location=" + encodeURIComponent(location);
 
     // Build a simple .ics file too, for anyone who'd rather download it
     const ics = [
@@ -562,7 +582,7 @@ You're warmly invited to celebrate Giulia's 40th year! Please join us for some f
       "DTEND:" + endStamp,
       "SUMMARY:" + cal.title,
       "DESCRIPTION:" + cal.details,
-      "LOCATION:" + cal.location,
+      "LOCATION:" + location,
       "END:VEVENT",
       "END:VCALENDAR"
     ].join("\r\n");
